@@ -1,85 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crono</title>
-  </head>
-  <body>
-    <h1>Crono</h1>
 
-    <div id="cronoTime">00:00:00</div>
-    <button id="start" onclick="cronoStart()">Start</button>
-    <button id="strop" onclick="cronoStop()">Stop</button>
-    <button id="reset" onclick="cronoReset()">Reset</button>
-    <script>
-      let seconds = 0;
-      let min = 0;
-      let hour = 0;
-      let hourS = "";
-      let minS = "";
-      let secondsS = "";
-      let startCrono;
-  
-      function cronoReset() {
-        cronoStop();
-        seconds = 0;
-        min = 0;
-        hour = 0;
-        hourS = "";
-        minS = "";
-        secondsS = "";
-        hourS = "0" + hour;
-        minS = "0" + min;
-        secondsS = "0" + seconds;
-        document.getElementById("cronoTime").innerHTML =
-          hourS + ":" + minS + ":" + secondsS;
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crono</title>
+</head>
 
-      }
+<body>
+  <h1>Crono</h1>
 
-      function cronoStart() {
-        startCrono = setInterval(crono, 1000);
-      }
+  <div id="cronoTime">00:00:00:000</div>
+  <button id="start" onclick="cronoStart()">Start</button>
+  <button id="strop" onclick="cronoStop()">Stop</button>
+  <button id="reset" onclick="cronoReset()">Reset</button>
+  <script>
+    let seconds = 0;
+    let min = 0;
+    let hour = 0;
+    let milliS = 0;
+    let crono = 0;
+    let cronoHora;
+    let startCrono;
+    let cronoMs;
+    let horaEmpezar = new Date();
 
-      function cronoStop() {
-        const btnStart = (document.getElementById("start").disabled = false);
-        clearInterval(startCrono);
-      }
+    function cronoReset() {
+      cronoStop();
+      document.getElementById("cronoTime").innerHTML =
+        "00:00:00:000"
+    }
 
-      function crono() {
-        const btnStart = (document.getElementById("start").disabled = true);
-        if (seconds == 60) {
-          min += 1;
-          seconds = 0;
-        }
-        if (min == 60) {
-          hour += 1;
-          min = 0;
-        }
-        if (hour == 24) {
-          hour = 0;
-        }
-        seconds += 1;
+    function cronoStart() {
+      startCrono = setInterval(cronometer, 10);
+    }
 
-        if (hour < 10) {
-          hourS = "0" + hour;
-        } else {
-          hourS = hour;
-        }
-        if (min < 10) {
-          minS = "0" + min;
-        } else {
-          minS = min;
-        }
-        if (seconds < 10) {
-          secondsS = "0" + seconds;
-        } else {
-          secondsS = seconds;
-        }
-        document.getElementById("cronoTime").innerHTML =
-          hourS + ":" + minS + ":" + secondsS;
-      }
-    </script>
-  </body>
+    function cronoStop() {
+      horaEmpezar = crono;
+      const btnStart = (document.getElementById("start").disabled = false);
+      clearInterval(startCrono);
+
+    }
+
+    function cronometer() {
+      const btnStart = (document.getElementById("start").disabled = true);
+      let horaActual = new Date();
+      crono = horaActual - horaEmpezar;
+      cronoMs = new Date(crono).getTime();
+
+      cronoHora = new Date(cronoMs).toISOString().slice(11, -1);
+
+      document.getElementById("cronoTime").innerHTML = cronoHora;
+
+    }
+  </script>
+</body>
+
 </html>
