@@ -12,99 +12,59 @@
   <h1>Timer</h1>
   <div id="timerTime">00:00:00</div>
 
-  <input type="number" max="23" min="0" id="hour">
-  <input type="number" max="59" min="0" id="min">
-  <input type="number" max="59" min="0" id="seconds">
+    <input type="number" id="hour">
+    <input type="number" id="min">
+    <input type="number" id="seconds">
 
   <button id="start" onclick="timerStart()">Start</button>
   <button id="strop" onclick="timerStop()">Stop</button>
   <button id="reset" onclick="timerReset()">Reset</button>
 
-  <script>
-    let seconds = document.getElementById("seconds").value;
-    let min = document.getElementById("min").value;
-    let hour = document.getElementById("hour").value;
-    let hourS = "";
-    let minS = "";
-    let secondsS = "";
-    let startCrono;
+    <script>
+      let startCrono;
 
-    function timerReset() {
-      timerStop();
-      seconds = 0;
-      min = 0;
-      hour = 0;
-      hourS = "";
-      minS = "";
-      secondsS = "";
-      hourS = "0" + hour;
-      minS = "0" + min;
-      secondsS = "0" + seconds;
-      document.getElementById("timerTime").innerHTML =
-        hourS + ":" + minS + ":" + secondsS;
+      let sec = Number(document.getElementById("seconds").value);
+      console.log(sec)
+      let min = Number(document.getElementById("min").value);
+      let hour = Number(document.getElementById("hour").value);
 
-    }
+      let startTime = new Date().getTime();
+      let setTime = new Date().setHours(hour, min, sec);
+      let timerTime = setTime + startTime;
 
-    function timerStart() {
-      seconds = Number(document.getElementById("seconds").value);
-      min = Number(document.getElementById("min").value);
-      hour = Number(document.getElementById("hour").value);
-      startCrono = setInterval(timer, 1000);
-    }
+      function timer() {
+        console.log(sec)
+        let currTime = new Date().getTime();
+        let remTime = timerTime - currTime;
+        
+        console.log(new Date(timerTime).toISOString())
 
-    function timerStop() {
-      clearInterval(startCrono);
-      const btnStart = (document.getElementById("start").disabled = false);
-    }
+        let timeToPrint = new Date(remTime).toISOString().slice(11, -5);
 
-    function timer() {
-      const btnStart = (document.getElementById("start").disabled = true);
-      if (hour > 23) {
-        hour = 23;
-      }
-      if (min > 60) {
-        min = 59;
-      }
-      if (seconds > 60) {
-        seconds = 60
+        document.getElementById("timerTime").innerHTML =
+          timeToPrint.toLocaleString();
+
+        if (remTime < 0) {
+          timerStop();
+        }
       }
 
-      if (seconds == 0 && min > 0) {
-        min -= 1
-        seconds = 60;
-      }
-      if (min == 0 && hour > 0) {
-        hour -= 1;
-        min = 60;
-      }
-      if (hour == 0 && min == 0 && seconds == 0) {
+      function timerReset() {
         timerStop();
-      } else {
-        seconds -= 1;
-      }
-      if (hour < 10) {
-        hourS = "0" + hour;
-      } else {
-        hourS = hour;
+        clearInterval(stopWatchStartInter);
+        document.getElementById("stopWatchTime").innerHTML = "00:00:00:000";
       }
 
-      if (min < 10) {
-        minS = "0" + min;
-      } else {
-        minS = min;
+      function timerStop() {
+        clearInterval(startCrono);
+        const btnStart = (document.getElementById("start").disabled = false);
       }
 
-      if (seconds < 10) {
-        secondsS = "0" + seconds;
-      } else {
-        secondsS = seconds;
+      function timerStart() {
+        const btnStart = (document.getElementById("start").disabled = true);
+        startCrono = setInterval(timer, 1000);
       }
-
-      document.getElementById("timerTime").innerHTML =
-        hourS + ":" + minS + ":" + secondsS;
-
-    }
-  </script>
+    </script>
 </body>
 
 </html>

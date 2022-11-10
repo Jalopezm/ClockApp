@@ -35,8 +35,20 @@
       <div id="alarmList"></div>
       <button id="Add" onclick="saveAlarm()">Add Alarm</button>
     </div>
+    <div class="tabcontent" id="timer">
+    <h1>Timer</h1>
+    <span id="timerTime">00:00:00</span>
+  
+    <input type="number" max="23" min="0" id="hour">
+    <input type="number" max="59" min="0" id="min">
+    <input type="number" max="59" min="0" id="seconds">
+  
+    <button id="start" onclick="timerStart()">Start</button>
+    <button id="strop" onclick="timerStop()">Stop</button>
+    <button id="reset" onclick="timerReset()">Reset</button>
+  </div>
     <script>
-      /**/
+      /*TABS*/
       document.getElementById("defaultOpen").click();
       function openPage(pageName) {
         var i, tabcontent, tablinks;
@@ -63,11 +75,6 @@
       }
 
       /*SCRIPT CRONOMETRO*/
-      let seconds = 0;
-      let min = 0;
-      let hour = 0;
-      let milliS = 0;
-      let time = 0;
       let stopWatchTimeForm;
       let stopWatchStartInter;
       let timeMs;
@@ -125,8 +132,6 @@
       function checkAlarms(time) {
         alarms.forEach((element) => {
           let alarm = element.ms;
-          console.log("Alarma:" + alarm);
-          console.log("Hora:" + time);
           if (alarm == time) {
             const audio = new Audio("audio");
             audio.play();
