@@ -25,3 +25,10 @@
   height: 100%;
 }
 
+#clock #clockView{
+    font-size: 100px;
+    margin-top: 5%;
+}
+#clock h1{
+    text-align: center;
+}
