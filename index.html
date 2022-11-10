@@ -9,24 +9,26 @@
   </head>
 
   <body>
-    <a href="#clock">Clock</a>
-    <a href="#timer">Timer</a>
-    <a href="#stopwatch">StopWatch</a>
-    <a href="#alarm">Alarms</a>
+    <button class="tablink" id="defaultOpen" onclick="openPage('clock')">Clock</button>
+    <button class="tablink" onclick="openPage('timer')">Timer</button>
+    <button class="tablink" onclick="openPage('stopwatch')">StopWatch</button>
+    <button class="tablink" onclick="openPage('alarm')">Alarms</button>
 
-    <div id="clock">
+    <div id="clock" class="tabcontent">
       <h1>Clock</h1>
       <span id="clockView"></span>
     </div>
-    <div id="stopwatch">
+
+    <div id="stopwatch" class="tabcontent">
       <h1>StopWatch</h1>
 
       <div id="stopWatchTime">00:00:00:000</div>
       <button id="start" onclick="stopWatchStart()">Start</button>
-      <button id="strop" onclick="stopWatchStop()">Stop</button>
+      <button id="stop" onclick="stopWatchStop()">Stop</button>
       <button id="reset" onclick="stopWatchReset()">Reset</button>
     </div>
-    <div id="alarm">
+
+    <div id="alarm" class="tabcontent">
       <h1>Alarms</h1>
       <span class="timeis" id="time"></span>
       <input type="datetime-local" id="datetime" />
@@ -34,6 +36,22 @@
       <button id="Add" onclick="saveAlarm()">Add Alarm</button>
     </div>
     <script>
+      /**/
+      document.getElementById("defaultOpen").click();
+      function openPage(pageName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "block";
+      }
+
       /*SCRIPT RELOJ*/
       setInterval(clock, 1000);
 
@@ -53,26 +71,33 @@
       let stopWatchTimeForm;
       let stopWatchStartInter;
       let timeMs;
-      let timeToStart = new Date();
+      let timeToStart;
+      const btnStop = (document.getElementById("stop").disabled = true);
 
       function stopWatchReset() {
+        const btnStop = (document.getElementById("stop").disabled = true);
         const btnStart = (document.getElementById("start").disabled = false);
-        clearInterval(stopWatchStartInter);
+        timeMs = new Date().getTime();
         timeToStart = new Date();
+        clearInterval(stopWatchStartInter);
         document.getElementById("stopWatchTime").innerHTML = "00:00:00:000";
       }
 
       function stopWatchStart() {
+        timeToStart = new Date();
+        const btnStop = (document.getElementById("stop").disabled = false);
         stopWatchStartInter = setInterval(stopWatch, 10);
       }
 
       function stopWatchStop() {
-        timeToStart = timeToStart;
         const btnStart = (document.getElementById("start").disabled = false);
+        const btnStop = (document.getElementById("stop").disabled = true);
+
         clearInterval(stopWatchStartInter);
       }
 
       function stopWatch() {
+        console.log(timeToStart);
         const btnStart = (document.getElementById("start").disabled = true);
         let actualTime = new Date();
         time = actualTime - timeToStart;
@@ -93,29 +118,34 @@
       );
       alarm();
       function alarm() {
-        let time = new Date().getTime();
+        let time = Math.floor(new Date().getTime() / 1000);
         checkAlarms(time);
       }
+
       function checkAlarms(time) {
-        console.log("curr" + time);
-        for (let index = 0; index < alarms.length; index++) {
-          console.log("1-" + alarms[index][0]);
-          /** TODO: arreglar alarm para que muestre la alarma */
-          let alarm = new Date(Number(alarms[index][0])).getTime();
-          console.log(alarm);
+        alarms.forEach((element) => {
+          let alarm = element.ms;
+          console.log("Alarma:" + alarm);
+          console.log("Hora:" + time);
           if (alarm == time) {
-            console.log("ALARMAAA");
+            const audio = new Audio("audio");
+            audio.play();
           }
-        }
+        });
       }
       setInterval(alarm, 1000);
       function saveAlarm() {
         currAlarm = new Date(document.getElementById("datetime").value + ":00");
+        let ms = Math.floor(currAlarm.getTime() / 1000);
         currAlarmTime = currAlarm.toLocaleTimeString();
-        let alarmsValues = [currAlarmTime, active];
+        let alarmsValues = [currAlarmTime, active, ms];
 
-        alarms.push(alarmsValues);
-        localStorageAlarm(alarms);
+        const objectAlarmsValues = JSON.parse(
+          `{"currAlarmTime":"${currAlarmTime}","active":${active},"ms":"${ms}"}`
+        );
+
+        alarms.push(objectAlarmsValues);
+        localStorageAlarm(JSON.stringify(alarms));
         displayAlarms();
       }
 
@@ -125,15 +155,15 @@
 
       function displayAlarms() {
         document.getElementById("alarmList").innerHTML = "";
-        for (let index = 0; index < alarms.length; index++) {
+        alarms.forEach((element) => {
           activeButton = document.createElement("button");
           activeButton.innerHTML = "Activate";
           li = document.createElement("li");
-          li.innerHTML = alarms[index][0];
+          li.innerHTML = element.currAlarmTime;
           document.getElementById("alarmList").appendChild(li);
           document.getElementById("alarmList").appendChild(activeButton);
           activeButton.setAttribute("onclick", "activeAlarm()");
-        }
+        });
       }
       function activeAlarm() {
         if (active == false) {
@@ -144,6 +174,8 @@
           activeButton.innerHTML = "Activate";
         }
       }
+
+      /*SCRIPT TIMER*/
     </script>
   </body>
 </html>

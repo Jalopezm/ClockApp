@@ -27,7 +27,9 @@
     let horaEmpezar = new Date();
 
     function cronoReset() {
-      cronoStop();
+      horaEmpezar = new Date();
+      clearInterval(startCrono);
+      const btnStart = (document.getElementById("start").disabled = false);
       document.getElementById("cronoTime").innerHTML =
         "00:00:00:000"
     }
@@ -37,9 +39,9 @@
     }
 
     function cronoStop() {
-      horaEmpezar = crono;
       const btnStart = (document.getElementById("start").disabled = false);
       clearInterval(startCrono);
+      horaEmpezar = horaEmpezar;
 
     }
 
