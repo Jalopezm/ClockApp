@@ -1,70 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timer</title>
-</head>
+  <body>
+    <h1>Timer</h1>
+    <div id="timerTime">00:00:00</div>
 
-<body>
-  <h1>Timer</h1>
-  <div id="timerTime">00:00:00</div>
+    <input type="number" id="hour" />
+    <input type="number" id="min" />
+    <input type="number" id="seconds" />
 
-    <input type="number" id="hour">
-    <input type="number" id="min">
-    <input type="number" id="seconds">
-
-  <button id="start" onclick="timerStart()">Start</button>
-  <button id="strop" onclick="timerStop()">Stop</button>
-  <button id="reset" onclick="timerReset()">Reset</button>
+    <button id="start" onclick="timerStart()">Start</button>
+    <button id="strop" onclick="timerStop()">Stop</button>
+    <button id="reset" onclick="timerReset()">Reset</button>
 
     <script>
-      let startCrono;
-
-      let sec = Number(document.getElementById("seconds").value);
-      console.log(sec)
-      let min = Number(document.getElementById("min").value);
-      let hour = Number(document.getElementById("hour").value);
-
-      let startTime = new Date().getTime();
-      let setTime = new Date().setHours(hour, min, sec);
-      let timerTime = setTime + startTime;
-
-      function timer() {
-        console.log(sec)
-        let currTime = new Date().getTime();
-        let remTime = timerTime - currTime;
-        
-        console.log(new Date(timerTime).toISOString())
-
-        let timeToPrint = new Date(remTime).toISOString().slice(11, -5);
-
-        document.getElementById("timerTime").innerHTML =
-          timeToPrint.toLocaleString();
-
-        if (remTime < 0) {
-          timerStop();
-        }
-      }
-
-      function timerReset() {
-        timerStop();
-        clearInterval(stopWatchStartInter);
-        document.getElementById("stopWatchTime").innerHTML = "00:00:00:000";
-      }
-
-      function timerStop() {
-        clearInterval(startCrono);
-        const btnStart = (document.getElementById("start").disabled = false);
-      }
-
-      function timerStart() {
-        const btnStart = (document.getElementById("start").disabled = true);
-        startCrono = setInterval(timer, 1000);
-      }
+     
     </script>
-</body>
-
+  </body>
 </html>
