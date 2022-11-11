@@ -1,186 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="css/style.css" rel="stylesheet" />
-    <title>ClockApp</title>
-  </head>
 
-  <body>
-    <button class="tablink" id="defaultOpen" onclick="openPage('clock')">Clock</button>
-    <button class="tablink" onclick="openPage('timer')">Timer</button>
-    <button class="tablink" onclick="openPage('stopwatch')">Crono</button>
-    <button class="tablink" onclick="openPage('alarm')">Alarms</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="css/style.css" rel="stylesheet" />
+  <title>ClockApp</title>
+</head>
 
-    <div id="clock" class="tabcontent">
-      <h1>Clock</h1>
-      <span id="clockView"></span>
-    </div>
+<body onload="onloadStart(),timerStart()">
+  <button class="tablink" id="defaultOpen" onclick="openPage('clock')">Clock</button>
+  <button class="tablink" onclick="openPage('timer')">Timer</button>
+  <button class="tablink" onclick="openPage('stopwatch')">Crono</button>
+  <button class="tablink" onclick="openPage('alarm')">Alarms</button>
 
-    <div id="stopwatch" class="tabcontent">
-      <h1>StopWatch</h1>
+  <div id="clock" class="tabcontent">
+    <h1>Clock</h1>
+    <span id="clockView"></span>
+  </div>
 
-      <span id="stopWatchTime">00:00:00:000</span>
-      <button id="start" onclick="stopWatchStart()">Start</button>
-      <button id="stop" onclick="stopWatchStop()">Stop</button>
-      <button id="reset" onclick="stopWatchReset()">Reset</button>
-    </div>
+  <div id="stopwatch" class="tabcontent">
+    <h1>StopWatch</h1>
 
-    <div id="alarm" class="tabcontent">
-      <h1>Alarms</h1>
-      <span class="timeis" id="time"></span>
-      <input type="datetime-local" id="datetime" />
-      <div id="alarmList"></div>
-      <button id="Add" onclick="saveAlarm()">Add Alarm</button>
-    </div>
-    <div class="tabcontent" id="timer">
+    <span id="stopWatchTime">00:00:00:000</span>
+    <div class="button">
+    <button id="start" onclick="stopWatchStart()">Start</button>
+    <button id="stop" onclick="stopWatchStop()">Stop</button>
+    <button id="reset" onclick="stopWatchReset()">Reset</button>
+  </div>
+  </div>
+
+  <div id="alarm" class="tabcontent">
+    <h1>Alarms</h1>
+    <span class="timeis" id="time"></span>
+    <input type="datetime-local" id="datetime" />
+    <div id="alarmList"></div>
+    <button id="Add" onclick="saveAlarm()">Add Alarm</button>
+  </div>
+
+  <div class="tabcontent" id="timer">
     <h1>Timer</h1>
     <span id="timerTime">00:00:00</span>
-  
+
     <input type="number" max="23" min="0" id="hour">
     <input type="number" max="59" min="0" id="min">
     <input type="number" max="59" min="0" id="seconds">
-  
+    <div class="button">
     <button id="start" onclick="timerStart()">Start</button>
-    <button id="strop" onclick="timerStop()">Stop</button>
+    <button id="stop" onclick="timerStop()">Stop</button>
     <button id="reset" onclick="timerReset()">Reset</button>
   </div>
-    <script>
-      /*TABS*/
-      document.getElementById("defaultOpen").click();
-      function openPage(pageName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.display = "none";
-        }
-
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < tablinks.length; i++) {
-          tablinks[i].style.backgroundColor = "";
-        }
-        document.getElementById(pageName).style.display = "block";
+  </div>
+  <script>
+    /*TABS*/
+    document.getElementById("defaultOpen").click();
+    function openPage(pageName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
       }
 
-      /*SCRIPT RELOJ*/
-      setInterval(clock, 1000);
-
-      function clock() {
-        let date = new Date();
-        document.getElementById("clockView").innerHTML =
-          date.toLocaleTimeString();
-        document.getElementById("time").innerHTML = date.toLocaleTimeString();
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
       }
+      document.getElementById(pageName).style.display = "block";
+    }
 
-      /*SCRIPT CRONOMETRO*/
-      let stopWatchTimeForm;
-      let stopWatchStartInter;
-      let timeMs = 0;
-      let time=0;
-      let timeToStart;
+    /*SCRIPT RELOJ*/
+    setInterval(clock, 1000);
+
+    function clock() {
+      let date = new Date();
+      document.getElementById("clockView").innerHTML =
+        date.toLocaleTimeString();
+      document.getElementById("time").innerHTML = date.toLocaleTimeString();
+    }
+
+    /*SCRIPT CRONOMETRO*/
+    let stopWatchTimeForm;
+    let stopWatchStartInter;
+    let timeMs = 0;
+    let time = 0;
+    let timeToStart;
+    const btnStop = (document.getElementById("stop").disabled = true);
+
+
+    function stopWatchReset() {
+      clearInterval(stopWatchStartInter);
       const btnStop = (document.getElementById("stop").disabled = true);
+      const btnStart = (document.getElementById("start").disabled = false);
+      timeMs = new Date().getTime();
+      timeToStart = new Date();
+      localStorage.setItem("crono", 0);
+      localStorage.setItem("cont",0);
+      time = 0;
+      document.getElementById("stopWatchTime").innerHTML = "00:00:00.000";
+    }
 
-      function stopWatchReset() {
-        const btnStop = (document.getElementById("stop").disabled = true);
-        const btnStart = (document.getElementById("start").disabled = false);
-        timeMs = new Date().getTime();
-        timeToStart = new Date();
-        time = 0;
-        clearInterval(stopWatchStartInter);
-        document.getElementById("stopWatchTime").innerHTML = "00:00:00:000";
-      }
-
-      function stopWatchStart() {
-        timeToStart = new Date()-time;
-        const btnStop = (document.getElementById("stop").disabled = false);
+    function stopWatchStart() {
+      time = Number(localStorage.getItem("crono"));
+      timeToStart = new Date() - time;
+      stopWatchStartInter = setInterval(stopWatch, 10);
+    }
+    function onloadStart(){
+      let cont = Number(localStorage.getItem("cont"));
+      if(cont >= 1){
+        time = Number(localStorage.getItem("crono"));
+      timeToStart = new Date() - time;
         stopWatchStartInter = setInterval(stopWatch, 10);
       }
+    }
 
-      function stopWatchStop() {
-        clearInterval(stopWatchStartInter);
-        const btnStart = (document.getElementById("start").disabled = false);
-        const btnStop = (document.getElementById("stop").disabled = true);
-      }
+    function stopWatchStop() {
+      localStorage.setItem("cont",0);
+      clearInterval(stopWatchStartInter);
+      const btnStart = (document.getElementById("start").disabled = false);
+      const btnStop = (document.getElementById("stop").disabled = true);
+    }
 
-      function stopWatch() {
-        let actualTime = new Date();
-        const btnStart = (document.getElementById("start").disabled = true);
-        time = actualTime - timeToStart;
-        timeMs = new Date(time).getTime();
+    function stopWatch() {
+      const btnStop = (document.getElementById("stop").disabled = false);
+      localStorage.setItem("cont",1);
+      let actualTime = new Date();
+      const btnStart = (document.getElementById("start").disabled = true);
+      time = actualTime - timeToStart;
+      timeMs = new Date(time).getTime();
 
-        stopWatchTimeForm = new Date(timeMs).toISOString().slice(11, -1);
-        localStorage.setItem("crono",timeToStart)
-        document.getElementById("stopWatchTime").innerHTML = stopWatchTimeForm;
-      }
+      stopWatchTimeForm = new Date(timeMs).toISOString().slice(11, -1);
+      localStorage.setItem("crono", timeMs);
+      document.getElementById("stopWatchTime").innerHTML = stopWatchTimeForm;
+    }
 
-      /*SCRIPT ALARMAS*/
-      let activeButton;
-      let alarms = new Array();
-      let li;
-      let active = false;
-      let currAlarm = new Date(
-        document.getElementById("datetime").value + ":00"
-      );
-      alarm();
-      function alarm() {
-        let time = Math.floor(new Date().getTime() / 1000);
-        checkAlarms(time);
-      }
+    /*SCRIPT ALARMAS*/
+    let activeButton;
+    let alarms = new Array();
+    let li;
+    let active = false;
+    let currAlarm = new Date(
+      document.getElementById("datetime").value + ":00"
+    );
+    alarm();
+    function alarm() {
+      let time = Math.floor(new Date().getTime() / 1000);
+      checkAlarms(time);
+    }
 
-      function checkAlarms(time) {
-        alarms.forEach((element) => {
-          let alarm = element.ms;
-          if (alarm == time) {
-            const audio = new Audio("audio");
-            audio.play();
-          }
-        });
-      }
-      setInterval(alarm, 1000);
-      function saveAlarm() {
-        currAlarm = new Date(document.getElementById("datetime").value + ":00");
-        let ms = Math.floor(currAlarm.getTime() / 1000);
-        currAlarmTime = currAlarm.toLocaleTimeString();
-        let alarmsValues = [currAlarmTime, active, ms];
-
-        const objectAlarmsValues = JSON.parse(
-          `{"currAlarmTime":"${currAlarmTime}","active":${active},"ms":"${ms}"}`
-        );
-
-        alarms.push(objectAlarmsValues);
-        localStorageAlarm(JSON.stringify(alarms));
-        displayAlarms();
-      }
-
-      function localStorageAlarm(alarms) {
-        localStorage.setItem("alarms", alarms);
-      }
-
-      function displayAlarms() {
-        document.getElementById("alarmList").innerHTML = "";
-        alarms.forEach((element) => {
-          activeButton = document.createElement("button");
-          activeButton.innerHTML = "Activate";
-          li = document.createElement("li");
-          li.innerHTML = element.currAlarmTime;
-          document.getElementById("alarmList").appendChild(li);
-          document.getElementById("alarmList").appendChild(activeButton);
-          activeButton.setAttribute("onclick", "activeAlarm()");
-        });
-      }
-      function activeAlarm() {
-        if (active == false) {
-          active = true;
-          activeButton.innerHTML = "Desactivate";
-        } else {
-          active = false;
-          activeButton.innerHTML = "Activate";
+    function checkAlarms(time) {
+      alarms.forEach((element) => {
+        let alarm = element.ms;
+        if (alarm == time) {
+          const audio = new Audio("audio");
+          audio.play();
         }
-      }
+      });
+    }
+    setInterval(alarm, 1000);
+    function saveAlarm() {
+      currAlarm = new Date(document.getElementById("datetime").value + ":00");
+      let ms = Math.floor(currAlarm.getTime() / 1000);
+      currAlarmTime = currAlarm.toLocaleTimeString();
+      let alarmsValues = [currAlarmTime, active, ms];
 
-      /*SCRIPT TIMER*/
-    </script>
-  </body>
+      const objectAlarmsValues = JSON.parse(
+        `{"currAlarmTime":"${currAlarmTime}","active":${active},"ms":"${ms}"}`
+      );
+
+      alarms.push(objectAlarmsValues);
+      localStorageAlarm(JSON.stringify(alarms));
+      displayAlarms();
+    }
+
+    function localStorageAlarm(alarms) {
+      localStorage.setItem("alarms", alarms);
+    }
+
+    function displayAlarms() {
+      document.getElementById("alarmList").innerHTML = "";
+      alarms.forEach((element) => {
+        activeButton = document.createElement("button");
+        activeButton.innerHTML = "Activate";
+        li = document.createElement("li");
+        li.innerHTML = element.currAlarmTime;
+        document.getElementById("alarmList").appendChild(li);
+        document.getElementById("alarmList").appendChild(activeButton);
+        activeButton.setAttribute("onclick", "activeAlarm()");
+      });
+    }
+    function activeAlarm() {
+      if (active == false) {
+        active = true;
+        activeButton.innerHTML = "Desactivate";
+      } else {
+        active = false;
+        activeButton.innerHTML = "Activate";
+      }
+    }
+
+    /*SCRIPT TIMER*/
+    let timerTime = Number(localStorage.getItem("timerTime"));
+    function timerStart() {
+      timerTime = Number(localStorage.getItem("timerTime"));
+      let hour = Number(document.getElementById("hour").value);
+      let min = Number(document.getElementById("min").value);
+      let seconds = Number(document.getElementById("seconds").value);
+
+      if(timerTime <= 0){
+        timerTime = new Date().setHours(hour + 1, min, seconds);
+      }
+      document.getElementById("start").disabled = true;
+      let startTime = new Date().getTime();
+      let futureTime = startTime + timerTime;
+
+      timerInterval = setInterval(() => {
+        timerTime = (futureTime - new Date().getTime());
+        console.log(timerTime)
+        localStorage.setItem("timerTime", timerTime);
+        displayTimer();
+      }, 10);
+    }
+    function displayTimer() {
+      let elapsedTime = new Date(timerTime).toISOString().slice(11, -1);
+      let elapsedTimeSecs = new Date(timerTime).toISOString().slice(11, -5);
+      document.getElementById("timerTime").innerHTML = elapsedTime;
+
+      if (elapsedTimeSecs === "00:00:00") {
+        timerTime = 0;
+        document.getElementById("timerTime").innerHTML = "00:00:00.000";
+        //Audio
+        timerStop();
+      }
+    }
+    function timerStop() {
+      clearInterval(timerInterval);
+      const btnStart = (document.getElementById("start").disabled = false);
+      const btnStop = (document.getElementById("stop").disabled = true);
+    }
+
+    function timerReset() {
+      clearInterval(timerInterval);
+      localStorage.setItem("timerTime", 0);
+      timerTime = 0;
+      document.getElementById("timerTime").innerHTML = "00:00:00.000";
+    }
+  </script>
+</body>
+
 </html>

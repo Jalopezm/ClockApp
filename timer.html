@@ -1,26 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Timer</title>
-  </head>
 
-  <body>
-    <h1>Timer</h1>
-    <div id="timerTime">00:00:00</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timer</title>
+</head>
 
-    <input type="number" id="hour" />
-    <input type="number" id="min" />
-    <input type="number" id="seconds" />
+<body>
+  <h1>Timer</h1>
+  <div id="timerTime">00:00:00</div>
 
-    <button id="start" onclick="timerStart()">Start</button>
-    <button id="strop" onclick="timerStop()">Stop</button>
-    <button id="reset" onclick="timerReset()">Reset</button>
+  <input type="number" id="hour" />
+  <input type="number" id="min" />
+  <input type="number" id="seconds" />
 
-    <script>
-     
-    </script>
-  </body>
+  <button id="start" onclick="timerStart()">Start</button>
+  <button id="strop" onclick="timerStop()">Stop</button>
+  <button id="reset" onclick="timerReset()">Reset</button>
+
+  <script>
+    let timerTime = 0;
+
+    function timerStart() {
+      document.getElementById("start").disabled = true;
+      let startTime = new Date().getTime();
+      let futureTime = startTime + timerTime;
+
+      timerInterval = setInterval(() => {
+        timerTime = (futureTime - new Date().getTime());
+        displayTimer();
+      }, 10);
+    }
+    function displayTimer() {
+      let elapsedTime = new Date(timerTime).toISOString().slice(11, -1);
+
+      document.getElementById("timerTime").innerHTML = elapsedTime;
+
+      if (timerTime < 0) {
+        timerTime = 0;
+        document.getElementById("timerTime").innerHTML = "00:00:00.000";
+          //Audio
+        stopTimer();
+      }
+    }
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+  </script>
+</body>
+
 </html>
