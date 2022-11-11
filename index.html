@@ -77,7 +77,8 @@
       /*SCRIPT CRONOMETRO*/
       let stopWatchTimeForm;
       let stopWatchStartInter;
-      let timeMs;
+      let timeMs = 0;
+      let time=0;
       let timeToStart;
       const btnStop = (document.getElementById("stop").disabled = true);
 
@@ -86,32 +87,31 @@
         const btnStart = (document.getElementById("start").disabled = false);
         timeMs = new Date().getTime();
         timeToStart = new Date();
+        time = 0;
         clearInterval(stopWatchStartInter);
         document.getElementById("stopWatchTime").innerHTML = "00:00:00:000";
       }
 
       function stopWatchStart() {
-        timeToStart = new Date();
+        timeToStart = new Date()-time;
         const btnStop = (document.getElementById("stop").disabled = false);
         stopWatchStartInter = setInterval(stopWatch, 10);
       }
 
       function stopWatchStop() {
+        clearInterval(stopWatchStartInter);
         const btnStart = (document.getElementById("start").disabled = false);
         const btnStop = (document.getElementById("stop").disabled = true);
-
-        clearInterval(stopWatchStartInter);
       }
 
       function stopWatch() {
-        console.log(timeToStart);
-        const btnStart = (document.getElementById("start").disabled = true);
         let actualTime = new Date();
+        const btnStart = (document.getElementById("start").disabled = true);
         time = actualTime - timeToStart;
         timeMs = new Date(time).getTime();
 
         stopWatchTimeForm = new Date(timeMs).toISOString().slice(11, -1);
-
+        localStorage.setItem("crono",timeToStart)
         document.getElementById("stopWatchTime").innerHTML = stopWatchTimeForm;
       }
 
