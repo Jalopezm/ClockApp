@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Roboto', sans-serif;
 }
 :root{
   --50:#E0F2F1;
@@ -17,9 +19,10 @@
   --A200: #64FFDA;
   --A400: #1DE9B6;
   --A700: #00BFA5;
+  --mode: url('../png/Luna.png');
 }
 body{
-    height: 100vh;
+    height: 90vh;
 }
 .tablink {
   text-align: center;
@@ -28,15 +31,19 @@ body{
   color: white;
   float: left;
   border: none;
-  outline: none;
+  border-radius: 11%,11%,0%,0%;
+  outline: var(--400) solid 1px;
   cursor: pointer;
   padding: 14px 16px;
   font-size: 1rem;
   width: 25%;
 }
+.tablink.active{
+  background-color: var(--800);
+}
 
 .tablink:hover {
-  background-color: var(--A500);
+  background-color: var(--800);
 }
 
 .tabcontent {
@@ -53,19 +60,13 @@ body{
 #clock #clockView {
   display: flex;
   justify-content: center;
-  font-size: 100px;
+  font-size: 5rem;
   margin-top: 5%;
 }
 #clock h1 {
   text-align: center;
 }
-#stopwatch {
-  color: white;
-  background-color: var(--800);
-}
-#stopwatch h1 {
-  text-align: center;
-}
+
 #alarm {
   color: white;
   background-color: var(--800);
@@ -76,7 +77,7 @@ body{
 #alarm #time {
   display: flex;
   justify-content: center;
-  font-size: 7rem;
+  font-size: 5rem;
   margin-top: 5%;
 }
 #alarm button{
@@ -99,10 +100,26 @@ body{
   display: block;
   padding: 0.5rem 1rem;
 }
-#alarm ol li{
-  display: block;
+.list{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+  flex-direction: column;
+}
+#alarmList li{
+  margin-top:30% ;
+  list-style: none;
 }
 
+#stopwatch {
+  color: white;
+  background-color: var(--800);
+}
+#stopwatch h1 {
+  text-align: center;
+}
 #stopwatch button{
   display: flex;
   margin-left: auto;
@@ -118,7 +135,7 @@ body{
 #stopwatch #stopWatchTime{
   display: flex;
   justify-content: center;
-  font-size: 7rem;
+  font-size: 4rem;
   margin-top: 5%;
 }
 
@@ -129,10 +146,33 @@ body{
 #timer h1 {
   text-align: center;
 }
-#timer button{
-  display: flex;
+#timer input{
+    margin-top: 5%;
+  margin-left: 1%;
+  margin-right: 1%;
+  font-size: 1.2rem;
+  display: block;
+  padding: 0.5rem 1rem;
+}
+.button{
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.input{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#timer button{
+  display: flex;
+  float: left;
+  margin-left: 5%;
+  margin-right: 5%;
   justify-content: center;
   margin-top: 5%;
   border-color:var(--50);
@@ -144,6 +184,47 @@ body{
 #timer #timerTime{
   display: flex;
   justify-content: center;
-  font-size: 7rem;
+  font-size: 4rem;
   margin-top: 5%;
+}
+.dark-mode{
+  --50:#00BFA5;
+  --100:#1DE9B6;
+  --200:#64FFDA;
+  --300:#A7FFEB;
+  --400:#004D40;
+  --500:#00695C;
+  --600:#00796B;
+  --700:#00897B;
+  --800:#009688;
+  --900:#26A69A;
+  --A100: #4DB6AC;
+  --A200: #80CBC4;
+  --A400: #B2DFDB;
+  --A700: #E0F2F1;
+  --mode: url('../png/soleado.png');
+}
+#mode{
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+}
+.mode{
+  position: relative;
+  border-radius: 50%;
+  padding: 40px;
+  box-shadow: 1px 1px 20px 0 #000000;
+  background-image: var(--mode);
+  background-size:50%;
+  background-repeat: no-repeat;
+  background-color:var(--900);
+  background-position: center;
+  cursor: pointer;
+}
+img{
+  position: relative;
+}
+.mode:hover {
+  background-color:var(--400);
+  border-radius: 50%;
 }
