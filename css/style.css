@@ -2,23 +2,41 @@
   margin: 0;
   padding: 0;
 }
+:root{
+  --50:#E0F2F1;
+  --100:#B2DFDB;
+  --200:#80CBC4;
+  --300:#4DB6AC;
+  --400:#26A69A;
+  --500:#009688;
+  --600:#00897B;
+  --700:#00796B;
+  --800:#00695C;
+  --900:#004D40;
+  --A100: #A7FFEB;
+  --A200: #64FFDA;
+  --A400: #1DE9B6;
+  --A700: #00BFA5;
+}
 body{
     height: 100vh;
 }
 .tablink {
-  background-color: #555;
+  text-align: center;
+  margin: auto;
+  background-color: var(--900);
   color: white;
   float: left;
   border: none;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
-  font-size: 17px;
+  font-size: 1rem;
   width: 25%;
 }
 
 .tablink:hover {
-  background-color: #777;
+  background-color: var(--A500);
 }
 
 .tabcontent {
@@ -30,7 +48,7 @@ body{
 
 #clock {
   color: white;
-  background-color: black;
+  background-color: var(--800);
 }
 #clock #clockView {
   display: flex;
@@ -40,4 +58,66 @@ body{
 }
 #clock h1 {
   text-align: center;
+}
+#stopwatch {
+  color: white;
+  background-color: var(--800);
+}
+#stopwatch h1 {
+  text-align: center;
+}
+#alarm {
+  color: white;
+  background-color: var(--800);
+}
+#alarm h1 {
+  text-align: center;
+}
+#alarm #time {
+  display: flex;
+  justify-content: center;
+  font-size: 7rem;
+  margin-top: 5%;
+}
+#alarm button{
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  margin-top: 5%;
+  border-color:var(--50);
+  border-radius: 5px;
+  font-size: 1.5rem;
+  padding: 1%;
+  background-color: var(--400);
+}
+#alarm input{
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.2rem;
+  display: block;
+  padding: 0.5rem 1rem;
+}
+#alarm ol li{
+  display: block;
+}
+
+#stopwatch button{
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  margin-top: 5%;
+  border-color:var(--50);
+  border-radius: 5px;
+  font-size: 1.5rem;
+  padding: 1%;
+  background-color: var(--400);
+}
+#stopwatch #stopWatchTime{
+  display: flex;
+  justify-content: center;
+  font-size: 7rem;
+  margin-top: 5%;
 }

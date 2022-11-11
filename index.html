@@ -11,7 +11,7 @@
   <body>
     <button class="tablink" id="defaultOpen" onclick="openPage('clock')">Clock</button>
     <button class="tablink" onclick="openPage('timer')">Timer</button>
-    <button class="tablink" onclick="openPage('stopwatch')">StopWatch</button>
+    <button class="tablink" onclick="openPage('stopwatch')">Crono</button>
     <button class="tablink" onclick="openPage('alarm')">Alarms</button>
 
     <div id="clock" class="tabcontent">
@@ -22,7 +22,7 @@
     <div id="stopwatch" class="tabcontent">
       <h1>StopWatch</h1>
 
-      <div id="stopWatchTime">00:00:00:000</div>
+      <span id="stopWatchTime">00:00:00:000</span>
       <button id="start" onclick="stopWatchStart()">Start</button>
       <button id="stop" onclick="stopWatchStop()">Stop</button>
       <button id="reset" onclick="stopWatchReset()">Reset</button>
